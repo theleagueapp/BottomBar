@@ -17,5 +17,6 @@
         <attr name="bb_titleTypeFace" format="string" />
         <attr name="bb_showShadow" format="boolean" />
         <attr name="bb_hideBadgeWhenSelected" format="boolean" />
+        <attr name="bb_showTextOnlyWhenSelected" format="boolean" />
     </declare-styleable>
 </resources>

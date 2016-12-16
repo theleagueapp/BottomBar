@@ -99,7 +99,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private boolean shyHeightAlreadyCalculated;
     private boolean navBarAccountedHeightCalculated;
 
-    private boolean hideBadgeWhenSelected = true;
+    private boolean hideBadgeWhenSelected;
+    private boolean showTextOnlyWhenSelected;
 
     public BottomBar(Context context) {
         super(context);
@@ -147,6 +148,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             titleTypeFace = getTypeFaceFromAsset(ta.getString(R.styleable.BottomBar_bb_titleTypeFace));
             showShadow = ta.getBoolean(R.styleable.BottomBar_bb_showShadow, true);
             hideBadgeWhenSelected = ta.getBoolean(R.styleable.BottomBar_bb_hideBadgeWhenSelected, true);
+            showTextOnlyWhenSelected = ta.getBoolean(R.styleable.BottomBar_bb_showTextOnlyWhenSelected, false);
         } finally {
             ta.recycle();
         }
@@ -253,6 +255,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
                 .titleTextAppearance(titleTextAppearance)
                 .titleTypeFace(titleTypeFace)
                 .hideBadgeWhenSelected(hideBadgeWhenSelected)
+                .showTextOnlyWhenSelected(showTextOnlyWhenSelected)
                 .build();
     }
 

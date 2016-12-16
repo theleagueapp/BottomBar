@@ -15,6 +15,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ public class BottomBarTab extends LinearLayout {
     private int activeColor;
     private int barColorWhenSelected;
     private int badgeBackgroundColor;
+    private boolean hideBadgeWhenSelected;
+    private boolean showTextOnlyWhenSelected;
 
     private AppCompatImageView iconView;
     private TextView titleView;
@@ -66,7 +69,7 @@ public class BottomBarTab extends LinearLayout {
     private int titleTextAppearanceResId;
     private Typeface titleTypeFace;
 
-    private boolean hideBadgeWhenSelected;
+
 
     enum Type {
         FIXED, SHIFTING, TABLET
@@ -90,6 +93,7 @@ public class BottomBarTab extends LinearLayout {
         setTitleTextAppearance(config.titleTextAppearance);
         setTitleTypeface(config.titleTypeFace);
         setHideBadgeWhenSelected(config.hideBadgeWhenSelected);
+        setShowTextOnlyWhenSelected(config.showTextOnlyWhenSelected);
     }
 
     void prepareLayout() {
@@ -339,6 +343,10 @@ public class BottomBarTab extends LinearLayout {
         hideBadgeWhenSelected = hide;
     }
 
+    void setShowTextOnlyWhenSelected(boolean show) {
+        showTextOnlyWhenSelected = show;
+    }
+
     public int getTitleTextAppearance() {
         return titleTextAppearanceResId;
     }
@@ -367,6 +375,8 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(activeAlpha);
         }
 
+        titleView.setVisibility(View.VISIBLE);
+
         if (badge != null && hideBadgeWhenSelected) {
             badge.hide();
         }
@@ -378,7 +388,11 @@ public class BottomBarTab extends LinearLayout {
         boolean isShifting = type == Type.SHIFTING;
 
         float scale = isShifting ? 0 : INACTIVE_FIXED_TITLE_SCALE;
-        int iconPaddingTop = isShifting ? sixteenDps : eightDps;
+        int iconPaddingTop = showTextOnlyWhenSelected || isShifting ? sixteenDps : eightDps;
+
+        if (showTextOnlyWhenSelected) {
+            titleView.setVisibility(View.INVISIBLE);
+        }
 
         if (animate) {
             setTopPaddingAnimated(iconView.getPaddingTop(), iconPaddingTop);
@@ -540,6 +554,16 @@ public class BottomBarTab extends LinearLayout {
         ViewCompat.setScaleY(titleView, scale);
     }
 
+    public void updateIcon(int iconResId) {
+        this.iconResId = iconResId;
+        iconView.setImageResource(this.iconResId);
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+        titleView.setText(title);
+    }
+
     @Override
     public Parcelable onSaveInstanceState() {
         if (badge != null) {
@@ -572,6 +596,7 @@ public class BottomBarTab extends LinearLayout {
         private final int titleTextAppearance;
         private final Typeface titleTypeFace;
         private final boolean hideBadgeWhenSelected;
+        private final boolean showTextOnlyWhenSelected;
 
         private Config(Builder builder) {
             this.inActiveTabAlpha = builder.inActiveTabAlpha;
@@ -583,6 +608,7 @@ public class BottomBarTab extends LinearLayout {
             this.titleTextAppearance = builder.titleTextAppearance;
             this.titleTypeFace = builder.titleTypeFace;
             this.hideBadgeWhenSelected = builder.hideBadgeWhenSelected;
+            this.showTextOnlyWhenSelected = builder.showTextOnlyWhenSelected;
         }
 
         public static class Builder {
@@ -595,6 +621,7 @@ public class BottomBarTab extends LinearLayout {
             private int titleTextAppearance;
             private Typeface titleTypeFace;
             private boolean hideBadgeWhenSelected;
+            private boolean showTextOnlyWhenSelected;
 
             public Builder inActiveTabAlpha(float alpha) {
                 this.inActiveTabAlpha = alpha;
@@ -638,6 +665,11 @@ public class BottomBarTab extends LinearLayout {
 
             public Builder hideBadgeWhenSelected(boolean hide) {
                 this.hideBadgeWhenSelected = hide;
+                return this;
+            }
+
+            public Builder showTextOnlyWhenSelected(boolean show) {
+                this.showTextOnlyWhenSelected = show;
                 return this;
             }
 
