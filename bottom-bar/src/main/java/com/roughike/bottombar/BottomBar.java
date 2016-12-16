@@ -146,6 +146,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             titleTextAppearance = ta.getResourceId(R.styleable.BottomBar_bb_titleTextAppearance, 0);
             titleTypeFace = getTypeFaceFromAsset(ta.getString(R.styleable.BottomBar_bb_titleTypeFace));
             showShadow = ta.getBoolean(R.styleable.BottomBar_bb_showShadow, true);
+            hideBadgeWhenSelected = ta.getBoolean(R.styleable.BottomBar_bb_hideBadgeWhenSelected, true);
         } finally {
             ta.recycle();
         }
@@ -239,10 +240,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
         TabParser parser = new TabParser(getContext(), defaultTabConfig, xmlRes);
         updateItems(parser.getTabs());
-    }
-
-    public void setHideBadgeWhenSelected(boolean hide) {
-        hideBadgeWhenSelected = hide;
     }
 
     private BottomBarTab.Config getTabConfig() {
