@@ -99,6 +99,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private boolean shyHeightAlreadyCalculated;
     private boolean navBarAccountedHeightCalculated;
 
+    private boolean hideBadgeWhenSelected = true;
+
     public BottomBar(Context context) {
         super(context);
         init(context, null);
@@ -239,6 +241,10 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         updateItems(parser.getTabs());
     }
 
+    public void setHideBadgeWhenSelected(boolean hide) {
+        hideBadgeWhenSelected = hide;
+    }
+
     private BottomBarTab.Config getTabConfig() {
         return new BottomBarTab.Config.Builder()
                 .inActiveTabAlpha(inActiveTabAlpha)
@@ -249,6 +255,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
                 .badgeBackgroundColor(badgeBackgroundColor)
                 .titleTextAppearance(titleTextAppearance)
                 .titleTypeFace(titleTypeFace)
+                .hideBadgeWhenSelected(hideBadgeWhenSelected)
                 .build();
     }
 

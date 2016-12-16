@@ -66,6 +66,8 @@ public class BottomBarTab extends LinearLayout {
     private int titleTextAppearanceResId;
     private Typeface titleTypeFace;
 
+    private boolean hideBadgeWhenSelected;
+
     enum Type {
         FIXED, SHIFTING, TABLET
     }
@@ -87,6 +89,7 @@ public class BottomBarTab extends LinearLayout {
         setBadgeBackgroundColor(config.badgeBackgroundColor);
         setTitleTextAppearance(config.titleTextAppearance);
         setTitleTypeface(config.titleTypeFace);
+        setHideBadgeWhenSelected(config.hideBadgeWhenSelected);
     }
 
     void prepareLayout() {
@@ -332,6 +335,10 @@ public class BottomBarTab extends LinearLayout {
         updateCustomTextAppearance();
     }
 
+    void setHideBadgeWhenSelected(boolean hide) {
+        hideBadgeWhenSelected = hide;
+    }
+
     public int getTitleTextAppearance() {
         return titleTextAppearanceResId;
     }
@@ -360,7 +367,7 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(activeAlpha);
         }
 
-        if (badge != null) {
+        if (badge != null && hideBadgeWhenSelected) {
             badge.hide();
         }
     }
@@ -564,6 +571,7 @@ public class BottomBarTab extends LinearLayout {
         private final int badgeBackgroundColor;
         private final int titleTextAppearance;
         private final Typeface titleTypeFace;
+        private final boolean hideBadgeWhenSelected;
 
         private Config(Builder builder) {
             this.inActiveTabAlpha = builder.inActiveTabAlpha;
@@ -574,6 +582,7 @@ public class BottomBarTab extends LinearLayout {
             this.badgeBackgroundColor = builder.badgeBackgroundColor;
             this.titleTextAppearance = builder.titleTextAppearance;
             this.titleTypeFace = builder.titleTypeFace;
+            this.hideBadgeWhenSelected = builder.hideBadgeWhenSelected;
         }
 
         public static class Builder {
@@ -585,6 +594,7 @@ public class BottomBarTab extends LinearLayout {
             private int badgeBackgroundColor;
             private int titleTextAppearance;
             private Typeface titleTypeFace;
+            private boolean hideBadgeWhenSelected;
 
             public Builder inActiveTabAlpha(float alpha) {
                 this.inActiveTabAlpha = alpha;
@@ -623,6 +633,11 @@ public class BottomBarTab extends LinearLayout {
 
             public Builder titleTypeFace(Typeface titleTypeFace) {
                 this.titleTypeFace = titleTypeFace;
+                return this;
+            }
+
+            public Builder hideBadgeWhenSelected(boolean hide) {
+                this.hideBadgeWhenSelected = hide;
                 return this;
             }
 
