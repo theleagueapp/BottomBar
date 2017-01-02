@@ -15,7 +15,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -375,8 +374,6 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(activeAlpha);
         }
 
-        titleView.setVisibility(View.VISIBLE);
-
         if (badge != null && hideBadgeWhenSelected) {
             badge.hide();
         }
@@ -387,12 +384,8 @@ public class BottomBarTab extends LinearLayout {
 
         boolean isShifting = type == Type.SHIFTING;
 
-        float scale = isShifting ? 0 : INACTIVE_FIXED_TITLE_SCALE;
+        float scale = showTextOnlyWhenSelected || isShifting ? 0 : INACTIVE_FIXED_TITLE_SCALE;
         int iconPaddingTop = showTextOnlyWhenSelected || isShifting ? sixteenDps : eightDps;
-
-        if (showTextOnlyWhenSelected) {
-            titleView.setVisibility(View.INVISIBLE);
-        }
 
         if (animate) {
             setTopPaddingAnimated(iconView.getPaddingTop(), iconPaddingTop);
@@ -505,9 +498,11 @@ public class BottomBarTab extends LinearLayout {
                         iconView.getPaddingRight(),
                         iconView.getPaddingBottom()
                 );
+
             }
         });
 
+        titleView.setPadding(0,0,0,0); // TextView padding seems to go nuts; force to 0 each time.
         paddingAnimator.setDuration(ANIMATION_DURATION);
         paddingAnimator.start();
     }
