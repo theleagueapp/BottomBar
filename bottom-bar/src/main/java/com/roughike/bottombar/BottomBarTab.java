@@ -305,7 +305,9 @@ public class BottomBarTab extends LinearLayout {
             badge.attachToTab(this, badgeBackgroundColor);
         }
 
-        if (!isActive) {
+        if (isActive) {
+            badge.grow(false);
+        } else {
             badge.shrink(false);
         }
 

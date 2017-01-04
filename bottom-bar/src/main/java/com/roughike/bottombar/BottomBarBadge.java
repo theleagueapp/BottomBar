@@ -126,17 +126,19 @@ class BottomBarBadge extends TextView {
     void grow(boolean animate) {
         isVisible = true;
 
+        // Note, for our League use case, scale of 1 was too large.
+        // Change it here to only scale up to 0.9
         if (animate) {
             ViewCompat.animate(this)
                     .setDuration(150)
                     .alpha(1)
-                    .scaleX(1)
-                    .scaleY(1)
+                    .scaleX(0.9f)
+                    .scaleY(0.9f)
                     .start();
         }
         else {
-            setScaleX(1f);
-            setScaleY(1f);
+            setScaleX(0.9f);
+            setScaleY(0.9f);
         }
     }
 
