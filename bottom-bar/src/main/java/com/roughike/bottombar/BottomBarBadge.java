@@ -63,27 +63,81 @@ class BottomBarBadge extends TextView {
     /**
      * Shows the badge with a neat little scale animation.
      */
-    void show() {
+    void show(boolean animate) {
         isVisible = true;
-        ViewCompat.animate(this)
-                .setDuration(150)
-                .alpha(1)
-                .scaleX(1)
-                .scaleY(1)
-                .start();
+
+        if (animate) {
+            ViewCompat.animate(this)
+                    .setDuration(150)
+                    .alpha(1)
+                    .scaleX(1)
+                    .scaleY(1)
+                    .start();
+        }
+        else {
+            setScaleX(1f);
+            setScaleY(1f);
+        }
     }
 
     /**
      * Hides the badge with a neat little scale animation.
      */
-    void hide() {
+    void hide(boolean animate) {
         isVisible = false;
-        ViewCompat.animate(this)
-                .setDuration(150)
-                .alpha(0)
-                .scaleX(0)
-                .scaleY(0)
-                .start();
+
+        if (animate) {
+            ViewCompat.animate(this)
+                    .setDuration(150)
+                    .alpha(0)
+                    .scaleX(0)
+                    .scaleY(0)
+                    .start();
+        }
+        else {
+            setScaleX(0f);
+            setScaleY(0f);
+        }
+    }
+
+    /**
+     * Shows the badge with a neat little scale animation.
+     */
+    void shrink(boolean animate) {
+        isVisible = true;
+
+        if (animate) {
+            ViewCompat.animate(this)
+                    .setDuration(150)
+                    .alpha(1)
+                    .scaleX(0.75f)
+                    .scaleY(0.75f)
+                    .start();
+        }
+        else {
+            setScaleX(0.75f);
+            setScaleY(0.75f);
+        }
+    }
+
+    /**
+     * Shows the badge with a neat little scale animation.
+     */
+    void grow(boolean animate) {
+        isVisible = true;
+
+        if (animate) {
+            ViewCompat.animate(this)
+                    .setDuration(150)
+                    .alpha(1)
+                    .scaleX(1)
+                    .scaleY(1)
+                    .start();
+        }
+        else {
+            setScaleX(1f);
+            setScaleY(1f);
+        }
     }
 
     /**
@@ -150,15 +204,16 @@ class BottomBarBadge extends TextView {
         AppCompatImageView iconView = tab.getIconView();
         ViewGroup.LayoutParams params = getLayoutParams();
 
+        int offset = 20;
         int size = Math.max(getWidth(), getHeight());
-        float xOffset = iconView.getWidth();
+        float xOffset = iconView.getWidth() - offset;
 
         if (tab.getType() == BottomBarTab.Type.TABLET) {
             xOffset /= 1.25;
         }
 
         setX(iconView.getX() + xOffset);
-        setTranslationY(10);
+        setTranslationY(offset);
 
         if (params.width != size || params.height != size) {
             params.width = size;

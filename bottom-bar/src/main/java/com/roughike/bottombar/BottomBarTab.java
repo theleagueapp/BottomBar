@@ -305,6 +305,10 @@ public class BottomBarTab extends LinearLayout {
             badge.attachToTab(this, badgeBackgroundColor);
         }
 
+        if (!isActive) {
+            badge.shrink(false);
+        }
+
         badge.setCount(count);
     }
 
@@ -374,8 +378,14 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(activeAlpha);
         }
 
-        if (badge != null && hideBadgeWhenSelected) {
-            badge.hide();
+
+        if (badge != null) {
+            if (hideBadgeWhenSelected) {
+                badge.hide(animate);
+            }
+            else {
+                badge.grow(animate);
+            }
         }
     }
 
@@ -399,8 +409,13 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(inActiveAlpha);
         }
 
-        if (!isShifting && badge != null) {
-            badge.show();
+        if (badge != null) {
+            if (!hideBadgeWhenSelected) {
+                badge.shrink(animate);
+            }
+            else if (!isShifting) {
+                badge.show(animate);
+            }
         }
     }
 
@@ -440,13 +455,13 @@ public class BottomBarTab extends LinearLayout {
         }
     }
 
-    void updateWidth(float endWidth, boolean animated) {
+    void updateWidth(float endWidth, final boolean animated) {
         if (!animated) {
             getLayoutParams().width = (int) endWidth;
 
             if (!isActive && badge != null) {
                 badge.adjustPositionAndSize(this);
-                badge.show();
+                badge.show(animated);
             }
             return;
         }
@@ -470,7 +485,7 @@ public class BottomBarTab extends LinearLayout {
             public void onAnimationEnd(Animator animation) {
                 if (!isActive && badge != null) {
                     badge.adjustPositionAndSize(BottomBarTab.this);
-                    badge.show();
+                    badge.show(animated);
                 }
             }
         });
@@ -503,6 +518,8 @@ public class BottomBarTab extends LinearLayout {
         });
 
         titleView.setPadding(0,0,0,0); // TextView padding seems to go nuts; force to 0 each time.
+        titleView.invalidate();
+
         paddingAnimator.setDuration(ANIMATION_DURATION);
         paddingAnimator.start();
     }
