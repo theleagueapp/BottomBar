@@ -244,6 +244,23 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         updateItems(parser.getTabs());
     }
 
+    public void show() {
+        if (isShy() && shyHeightAlreadyCalculated) {
+            toggleShyVisibility(false);
+        }
+        else {
+            // TODO change visibility?
+        }
+    }
+
+    public void hide() {
+        if (isShy() && shyHeightAlreadyCalculated) {
+            toggleShyVisibility(true);
+        } else {
+            // TODO change visibility?
+        }
+    }
+
     private BottomBarTab.Config getTabConfig() {
         return new BottomBarTab.Config.Builder()
                 .inActiveTabAlpha(inActiveTabAlpha)
