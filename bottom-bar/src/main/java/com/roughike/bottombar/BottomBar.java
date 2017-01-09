@@ -10,18 +10,16 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -638,42 +636,53 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         }
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        Bundle bundle = saveState();
-        bundle.putParcelable("superstate", super.onSaveInstanceState());
-        return bundle;
-    }
+    // Note due to issue #137311723 I have commented out all onSaveInstanceState and onRestoreInstanceState
+    // Need to figure out why it was not playing nice with setting the badge value after coming out
+    // of the background after a memory allocation.
 
-    @VisibleForTesting
-    Bundle saveState() {
-        Bundle outState = new Bundle();
-        outState.putInt(STATE_CURRENT_SELECTED_TAB, currentTabPosition);
-
-        return outState;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
-            restoreState(bundle);
-
-            state = bundle.getParcelable("superstate");
-        }
-        super.onRestoreInstanceState(state);
-    }
-
-    @VisibleForTesting
-    void restoreState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            isComingFromRestoredState = true;
-            ignoreTabReselectionListener = true;
-
-            int restoredPosition = savedInstanceState.getInt(STATE_CURRENT_SELECTED_TAB, currentTabPosition);
-            selectTabAtPosition(restoredPosition, false);
-        }
-    }
+//    @Override
+//    public Parcelable onSaveInstanceState() {
+//        Log.v("BB", "BottomBar onSaveInstanceState");
+//        Bundle bundle = saveState();
+//        bundle.putParcelable("superstate", super.onSaveInstanceState());
+//        return bundle;
+//    }
+//
+//    @VisibleForTesting
+//    Bundle saveState() {
+//        Log.v("BB", "BottomBar saveState");
+//        Bundle outState = new Bundle();
+//        outState.putInt(STATE_CURRENT_SELECTED_TAB, currentTabPosition);
+//
+//        return outState;
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Parcelable state) {
+//        Log.v("BB", "BottomBar onRestoreInstanceState");
+//        if (state instanceof Bundle) {
+//            Bundle bundle = (Bundle) state;
+//            restoreState(bundle);
+//
+//            Parcelable superstate = bundle.getParcelable("superstate");
+//            if (superstate != null) {
+//                state = superstate;
+//            }
+//        }
+//        super.onRestoreInstanceState(state);
+//    }
+//
+//    @VisibleForTesting
+//    void restoreState(Bundle savedInstanceState) {
+//        Log.v("BB", "BottomBar restoreState");
+//        if (savedInstanceState != null) {
+//            isComingFromRestoredState = true;
+//            ignoreTabReselectionListener = true;
+//
+//            int restoredPosition = savedInstanceState.getInt(STATE_CURRENT_SELECTED_TAB, currentTabPosition);
+//            selectTabAtPosition(restoredPosition, false);
+//        }
+//    }
 
     @Override
     public void onClick(View v) {
